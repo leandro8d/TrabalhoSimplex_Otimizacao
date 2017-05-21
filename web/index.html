@@ -1,0 +1,247 @@
+<!-- Authord: Leandro,Jonathan, Yuri
+
+-->
+<!doctype html>
+<html lang="pt" ng-app="simplex">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" />
+        <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+        <title>Simplex by JLY</title>
+
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+        <meta name="viewport" content="width=device-width" />
+
+        <!-- Bootstrap core CSS     -->
+        <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
+
+        <!--  Material Dashboard CSS    -->
+        <link href="./assets/css/material-dashboard.css" rel="stylesheet"/>
+
+        <!--  CSS for Demo Purpose, don't include it in your project     -->
+        <link href="./assets/css/demo.css" rel="stylesheet" />
+
+        <!--     Fonts and icons     -->
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body ng-controller="homeController">
+
+        <div class="wrapper">
+
+            <div class="sidebar" data-color="blue" data-image="./assets/img/sidebar-3.jpg">
+                <!--
+                Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+                Tip 2: you can also add an image using data-image tag
+                -->
+
+                <div class="logo">
+                    <a href="http://www.creative-tim.com" class="simple-text">
+                        Simplex
+                    </a>
+                </div>
+
+                <div class="sidebar-wrapper">
+                    <ul class="nav">
+                        <li class="active">
+                            <a href="index.html" style="background: #449d44">
+                                <i class="material-icons">dashboard</i>
+                                <p >Cálculo Função Ótima</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav">
+                        <li>
+                            <a href="manual.html">
+                                <i class="material-icons">dashboard</i>
+                                <p>Manual de Utilização</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-panel">
+                <nav class="navbar navbar-transparent navbar-absolute">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#">Cálculo de Função Ótima - Simplex</a>
+
+                        </div>
+                        <div class="collapse navbar-collapse">
+
+
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="content">
+                    <div class="container-fluid">
+
+
+
+                        <div class="col-lg-12 col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header" data-background-color="black">
+                                            <h4 class="title">Valores Para Serem Inseridos no simplex</h4>
+                                            <p class="category"></p>
+                                        </div>
+                                        <div class="card-content" >
+
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+
+                                                        <div class="row">
+                                                            <form name="formSimplex" class="css-form">
+                                                                <div class="col-lg-1">
+                                                                    <label class="control-label">Problema</label>
+                                                                    <select  ng-model="selectedProblema"  ng-options="x.descricao for x in problemas" class="form-control" required>   
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <label class="control-label">Função</label>
+                                                                    <input ng-model="funcao" class="form-control" required>
+
+                                                                </div>
+
+                                                                <div class="col-lg-1">
+
+                                                                    <label class="control-label">Sinal</label>
+                                                                    <select ng-show="rows.length > 0 && flagFObjApagada != true"  ng-model="selectedCondicao"  ng-options="x for x in condicoes" class="form-control" ng-required="rows.length>0&&!flagFObjApagada">
+                                                                    </select>
+                                                                    <input  value="{{'='}}" ng-disabled="true" ng-if="rows.length == 0 || (flagFObjApagada && rows.length > 0)"  type="text" class="form-control">
+                                                                </div>
+
+                                                                <div class="col-lg-1" >
+                                                                    <label class="control-label">Membro Livre</label>
+                                                                    <input ng-disabled="rows.length == 0 || flagFObjApagada" ng-model="final"  type="number" class="form-control" required>
+                                                                </div>
+                                                            </form>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-9 col-md-offset-1">
+                                                        <div class="card card-plain">
+                                                            <div class="card-header" data-background-color="green">
+                                                                <h4 class="title">Funções Inseridas</h4>
+                                                                <p class="category"></p>
+                                                            </div>
+
+                                                            <div class="panel panel-default">
+                                                                <!-- Default panel contents -->
+                                                                <div class="panel-heading">
+                                                                    <button type="button"  style="background:  black" ng-click="addColumn()" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"/></button>
+                                                                    <button type="button" placeholder="Apagar Linha Selecionada" style="background: black" ng-click="apagarLinha()"  class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"/> </button>
+                                                                    <button type="button" style="background: black"  ng-click="recarregar()" class="btn btn-primary"><span class="glyphicon glyphicon-refresh" aria-hidden="true"/></button>
+                                                                    <button type="button" style="background: black"  ng-click="calcular()" class="btn btn-primary">Calcular</button>
+
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                                <div class="card-content table-responsive" style="height: 500px;">
+                                                                    <table class="table table-hover table-bordered" ng-if="rows.length > 0" >
+                                                                        <thead data-background-color="green">
+                                                                            <tr>
+                                                                                <th class="text-center" ng-repeat="column in rowheader track by $index" ng-bind="column"></th>
+                                                                            </tr>
+
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr  ng-click="setSelected(row)" ng-class="{'info': row === selectedRow}" ng-repeat="row in rows track by $index">
+                                                                                <td ng-bind="column1"  class="text-right" ng-repeat="column1 in row track by $index">
+                                                                                    {{column1}}
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div role="alert"  class='col-lg-2'> 
+                                                        <div class="panel panel-default" ng-if='resultado.length>0'>
+                                                            <div class="panel-heading">Resultado</div>
+                                                            <div class="panel-body" style="height: 300px;overflow-y: scroll">
+                                                               <ul  class="list-group">
+                                                            <li ng-repeat="r in resultado" class="list-group-item list-group-item-warning">{{r}}</li>
+                                                        </ul>
+                                                            </div>
+                                                        </div>
+
+                                                        
+
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <footer class="footer">
+                        <div class="container-fluid">
+                           
+                            <p class="copyright pull-right">
+                                &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://pucminas.br">JLY</a>, Desenvolvido Para Fins Acadêmicos
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+    </body>
+
+
+
+    <!--   Core JS Files   -->
+    <script src="./assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="./assets/js/angular.min.js" type="text/javascript"></script>
+    <script src="./assets/js/chart.js" type="text/javascript"></script>
+    <script src="./assets/js/angular-chart.min.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./assets/js/material.min.js" type="text/javascript"></script>
+    <script src="./assets/js/ui-bootstrap-tpls-2.5.0.min.js" type="text/javascript"></script>
+
+    <script src="./scripts/modules/simplexmodule.js" type="text/javascript"></script>
+    <script src="./scripts/controllers/home/homecontroller.js" type="text/javascript"></script>
+    <script src="./scripts/controllers/modals/modalsController.js" type="text/javascript"></script>
+    <!--  Charts Plugin -->
+    <script src="./assets/js/chartist.min.js"></script>
+
+    <!--  Notifications Plugin    -->
+    <script src="./assets/js/bootstrap-notify.js"></script>
+
+    <!--  Google Maps Plugin    -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+
+    <!-- Material Dashboard javascript methods -->
+    <script src="./assets/js/material-dashboard.js"></script>
+
+    <!-- Material Dashboard DEMO methods, don't include it in your project! -->
+    <script src="./assets/js/demo.js"></script>
+
+</html>
