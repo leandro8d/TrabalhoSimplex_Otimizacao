@@ -1,0 +1,3 @@
+os códigos fontes se encontram no diretório: src/java/Domain/Entities, que sao as classes de domínio onde havera as operações.
+Serviço web se encontra no diretório src/java/application/services/ServicoSX.java, resposavel pela transição de informações entre front e back.
+./web fica o front end com os arquivos js e html.
