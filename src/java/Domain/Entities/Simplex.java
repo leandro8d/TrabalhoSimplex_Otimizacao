@@ -125,6 +125,7 @@ public class Simplex {
             System.out.printf(e.getMessage());}
     }
     
+    // Regras do ambito da primeira fase
     public boolean primeiraFase()
     {
         int lin = 0, col = 0;
@@ -165,6 +166,7 @@ public class Simplex {
         return conclui;
     }
     
+    // Regras do ambito da primeira fase
     public int segundaFase()
     {
         int lin = 0, col = 0, conclui = 0;
@@ -252,6 +254,7 @@ public class Simplex {
         mCima = mAux;
     }
     
+    // impressão dos resultados
     public List<String> imprimeResultado()
     {
        List<String> resultadoList = new ArrayList<String>();
